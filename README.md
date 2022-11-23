@@ -1,29 +1,31 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+과제 개발 진행사항에 대한 기록을 하는 문서입니다.<br>
+본 문서는 나정일의 작업 과정에 대한 예시입니다.
 
-### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### 실행 가이드 - TO DO
+<br>
 
-### How do I get set up? ###
+### API 목록 - TO DO
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
++ 회원 관리
+  + 회원 가입
+  + 이메일 로그인
+  + 핸드폰 로그인
+  + 비밀번호 변경
+  + 회원 본인 정보 조회
 
-### Contribution guidelines ###
+### 개발 작업 List
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+- [ ] 사용할 RDB : H2 (InMemory, 바로 실행 가능)
+- [ ] 회원 테이블 정의
+  - [ ] 회원 정보 정의 : 이메일, 핸드폰, 주민번호, 나이, 비밀번호
+- [ ] JWT 토큰 적용
+  - [ ] JWT 라이브러리 결정 필요
+- [ ] 회원 정보 암호화 : 복호화 가능 / 불가능 분리
+  - [ ] 복호화 불가능한 정보 : 비밀번호
+  - [ ] 복호화 가능한 정보 : 이메일, 핸드폰, 주민번호, 나이
+- [ ] 실행 가능 소스 상태로 만들기
+- [ ] (선택) Docker 환경에서 배포 및 실행 가능하게 만들기
+  
