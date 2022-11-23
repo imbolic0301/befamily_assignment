@@ -1,16 +1,46 @@
 package com.example.persist.entity;
 
 
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Table(name = "dtb_member")
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString // TODO - 개발 완료시 삭제할 것
 public class MemberEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "identifier_kor", nullable = false)
     private String identifierKor;
+
+    @Column(name = "age", nullable = false)
     private String age;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder
     public MemberEntity(String phone, String email, String identifierKor, String age, String password) {
         this.phone = phone;
         this.email = email;
@@ -42,7 +72,6 @@ public class MemberEntity {
     public String password() {
         return password;
     }
-
 
     @Override
     public boolean equals(Object o) {
