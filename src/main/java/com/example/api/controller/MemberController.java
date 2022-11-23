@@ -1,16 +1,23 @@
 package com.example.api.controller;
 
+import com.example.api.dto.CommonDto;
 import com.example.api.dto.MemberDto;
+import com.example.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/member")
+@RequiredArgsConstructor
 public class MemberController {
 
+    private final MemberService memberService;
+
     @PostMapping
-    public ResponseEntity<?> join(@RequestBody MemberDto.Request.Join request) {
-        return null;
+    public ResponseEntity<?> join(@RequestBody MemberDto.Request.Join request) throws Exception {
+        memberService.join(request);
+        return ResponseEntity.ok(CommonDto.successResponse);
     }
 
     @PostMapping("/login")

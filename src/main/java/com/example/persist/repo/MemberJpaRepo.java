@@ -2,10 +2,16 @@ package com.example.persist.repo;
 
 import com.example.persist.entity.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
-@Repository
 public interface MemberJpaRepo extends JpaRepository<MemberEntity, Long> {
-    void changePassword(MemberEntity member);
+
+    @Query("SELECT m FROM MemberEntity m WHERE m.email = :email")
+    MemberEntity findByEmail(@Param("email") String email);
+
+    @Query("SELECT m FROM MemberEntity m WHERE m.phone = :phone")
+    MemberEntity findByPhone(@Param("phone") String phone);
+
 }
