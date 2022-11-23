@@ -1,14 +1,38 @@
 package com.example.persist.entity;
 
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+@Table(name = "dtb_member")
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString // TODO - 개발 완료시 삭제할 것
 public class MemberEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "phone")
     private String phone;
+
+    @Column(name = "identifier_kor", nullable = false)
     private String identifierKor;
+
+    @Column(name = "age", nullable = false)
     private String age;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     public MemberEntity(String phone, String email, String identifierKor, String age, String password) {
