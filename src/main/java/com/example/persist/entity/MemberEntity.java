@@ -2,11 +2,16 @@ package com.example.persist.entity;
 
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Table(name = "dtb_member")
@@ -35,6 +40,7 @@ public class MemberEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Builder
     public MemberEntity(String phone, String email, String identifierKor, String age, String password) {
         this.phone = phone;
         this.email = email;
@@ -66,7 +72,6 @@ public class MemberEntity {
     public String password() {
         return password;
     }
-
 
     @Override
     public boolean equals(Object o) {
