@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString // TODO - 개발 완료시 삭제할 것
-public class MemberEntity {
+public class MemberEntity extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
