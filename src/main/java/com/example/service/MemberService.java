@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +32,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void changePassword(MemberDto.Request.PasswordChange request) {
-
+    public void changePassword(MemberDto.Request.TempPasswordChange request) throws Exception {
+        Optional<MemberEntity> optionalEntity = memberRepo.findById(request.getId());
+        if(!optionalEntity.isPresent()) throw new Exception("not found member");
+        MemberEntity exist = optionalEntity.get();
+        exist.changePassword(request.getOldPassword(), request.getNewPassword());
+        memberRepo.save(exist);
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

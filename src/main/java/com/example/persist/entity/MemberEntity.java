@@ -40,6 +40,7 @@ public class MemberEntity extends TimeEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+
     @Builder
     public MemberEntity(String phone, String email, String identifierKor, String age, String password) {
         this.phone = phone;
@@ -71,6 +72,11 @@ public class MemberEntity extends TimeEntity {
 
     public String password() {
         return password;
+    }
+
+    public void changePassword(String oldPassword, String newPassword) throws Exception {
+        if(!this.password().equals(oldPassword)) throw new Exception("invalid try");
+        this.password = newPassword;
     }
 
     @Override

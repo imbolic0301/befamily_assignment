@@ -25,9 +25,10 @@ public class MemberController {
         return null;
     }
 
-    @PatchMapping("/password")
-    public ResponseEntity<?> login(@RequestBody MemberDto.Request.PasswordChange request) {
-        return null;
+    @PatchMapping("/password/temp")
+    public ResponseEntity<?> login(@RequestBody MemberDto.Request.TempPasswordChange request) throws Exception {
+        memberService.changePassword(request);
+        return ResponseEntity.ok(CommonDto.successResponse.get());
     }
 
 }
