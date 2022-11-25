@@ -18,7 +18,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString // TODO - 개발 완료시 삭제할 것
-public class MemberEntity {
+public class MemberEntity extends TimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,7 @@ public class MemberEntity {
 
     @Column(name = "password", nullable = false)
     private String password;
+
 
     @Builder
     public MemberEntity(String phone, String email, String identifierKor, String age, String password) {
@@ -71,6 +72,11 @@ public class MemberEntity {
 
     public String password() {
         return password;
+    }
+
+    public void changePassword(String oldPassword, String newPassword) throws Exception {
+        if(!this.password().equals(oldPassword)) throw new Exception("invalid try");
+        this.password = newPassword;
     }
 
     @Override

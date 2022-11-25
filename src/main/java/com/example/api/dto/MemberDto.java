@@ -24,8 +24,9 @@ public class MemberDto {
         }
 
         @Getter
-        public static class PasswordChange {
-            private String email;
+        public static class TempPasswordChange {
+            private Long id;
+//            private String email;
             private String oldPassword;
             private String newPassword;
         }
@@ -33,6 +34,7 @@ public class MemberDto {
     }
 
     public static class Response {
+        @Getter
         public static class Info {
 
             public Info(MemberEntity entity) {
