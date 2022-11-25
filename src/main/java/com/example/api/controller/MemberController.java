@@ -17,7 +17,7 @@ public class MemberController {
     @PostMapping
     public ResponseEntity<?> join(@RequestBody MemberDto.Request.Join request) throws Exception {
         memberService.join(request);
-        return ResponseEntity.ok(CommonDto.successResponse);
+        return ResponseEntity.ok(CommonDto.successResponse.get());
     }
 
     @PostMapping("/login")
