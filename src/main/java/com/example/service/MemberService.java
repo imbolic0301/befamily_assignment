@@ -18,6 +18,11 @@ public class MemberService {
 
     private final MemberJpaRepo memberRepo;
 
+    @Transactional(readOnly = true)
+    public MemberEntity memberFrom(Long id) throws Exception {
+        return entityFrom(id);
+    }
+
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void join(MemberDto.Request.Join request) throws Exception {
         MemberEntity newMember = from(request);
@@ -62,10 +67,6 @@ public class MemberService {
                 .age(request.getAge())
                 .password(request.getPassword())
                 .build();
-    }
-
-    public MemberEntity viewInfo(Long id) {
-        return null;
     }
 
 }

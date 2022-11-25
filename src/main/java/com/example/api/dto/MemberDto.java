@@ -34,6 +34,7 @@ public class MemberDto {
     }
 
     public static class Response {
+        @Getter
         public static class Info {
 
             public Info(MemberEntity entity) {
