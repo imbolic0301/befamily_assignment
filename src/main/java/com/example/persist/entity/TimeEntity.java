@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDateTime;
 
 @Getter
 @MappedSuperclass
@@ -18,10 +19,10 @@ public class TimeEntity {
 
     @CreatedDate
     @Column(name = "created_at", nullable = true, updatable = false)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = true)
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
 
 }
