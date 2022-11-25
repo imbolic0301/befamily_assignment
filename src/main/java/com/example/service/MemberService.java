@@ -33,9 +33,7 @@ public class MemberService {
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void changePassword(MemberDto.Request.TempPasswordChange request) throws Exception {
-        Optional<MemberEntity> optionalEntity = memberRepo.findById(request.getId());
-        if(!optionalEntity.isPresent()) throw new Exception("not found member");
-        MemberEntity exist = optionalEntity.get();
+        MemberEntity exist = entityFrom(request.getId());
         exist.changePassword(request.getOldPassword(), request.getNewPassword());
         memberRepo.save(exist);
     }
@@ -48,6 +46,12 @@ public class MemberService {
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void loginByPhone(String phone, String password) {
 
+    }
+
+    private MemberEntity entityFrom(Long id) throws Exception {
+        Optional<MemberEntity> optionalEntity = memberRepo.findById(id);
+        if(!optionalEntity.isPresent()) throw new Exception("not found member");
+        return optionalEntity.get();
     }
 
     private MemberEntity from(MemberDto.Request.Join request) {
