@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "49ff15e6-ce25-4b58-9c84-949aeeb29f0e",
+		"name": "비패밀리",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5099784"
+	},
+	"item": [
+		{
+			"name": "POST - 회원 가입",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"tester@test.com\",\n    \"phone\": \"010-1234-1234\",\n    \"identifierKor\": \"920301-1234567\",\n    \"age\": \"15\",\n    \"password\": \"passWord\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/member",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - 이메일 로그인",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"tester@test.com\",\n    \"phone\": \"010-1234-1234\",\n    \"identifierKor\": \"920301-1234567\",\n    \"age\": \"15\",\n    \"password\": \"passWord\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/member",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - 전화번호 로그인",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone\": \"010-1234-1234\",\n    \"password\": \"passWord\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/member/login/phone",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"member",
+						"login",
+						"phone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH - 비밀번호 변경",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"oldPassword\": \"passWord\",\n    \"newPassword\": \"NeWpassWord\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/member/password/temp",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"member",
+						"password",
+						"temp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - 회원 본인 정보 확인",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/member/info/temp/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"member",
+						"info",
+						"temp",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
