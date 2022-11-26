@@ -25,8 +25,6 @@ public class JwtTokenProvider {
     private static final String SECRET_KEY_LITERAL = "7d5d44e2-6cbb-11ed-a1eb-0242ac120002";
     private String secretKey;
 
-    // JWT 토큰에서 사용할
-    private static final String JWT_CLAIM_MAP_NAME = "roles";
 
     // 객체 초기화, secretKey 를 Base64로 인코딩한다.
     @PostConstruct
