@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,8 +44,8 @@ public class MemberController {
         return ResponseEntity.ok(CommonDto.successResponse.get());
     }
 
-    @GetMapping("/info/temp/{id}")
-    public ResponseEntity<?> viewInfo(@PathVariable Long id) throws Exception {
+    @GetMapping("/info")
+    public ResponseEntity<?> viewInfo(Long id) throws Exception {
         MemberEntity member = memberService.memberFrom(id);
         return ResponseEntity.ok(new MemberDto.Response.Info(member));
     }
