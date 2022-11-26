@@ -4,7 +4,7 @@
 본 문서는 나정일의 작업 과정에 대한 예시입니다.
 
 
-### 실행 가이드 - TO DO
+### 실행 가이드 
 1. 사전 설치 필요 <br> OpenJDK 1.8 버전, Intellij IDEA (Community), Git
 2. 소스 받아오기<br> git clone https://github.com/imbolic0301/befamily_assignment.git
 3. 프로젝트 경로로 이동 ex) cd demo <br>
@@ -16,7 +16,7 @@
 POSTMAN 을 이용해서 테스트했습니다.  
 프로젝트 내의 demo_postman_collection.json 을 import 하면 편리하게 사용 가능합니다.
 
-### API 목록 - TO DO
+### API 목록
 
 + 회원 관리
   + 회원 가입
@@ -53,5 +53,7 @@ JPA Entity 의 데이터 생성 및 변경 시간 필드 추가 완료
 암호화 적용 작업 완료  
 예외 핸들러 적용 완료
 
-
-
+### 본 프로젝트에 적용되지 않은 부분
+1. 입력값 검증  - 비즈니스 로직을 정한 뒤 구현하는 편입니다. javax 를 통한 @Valid 를 사용하는 편입니다.
+2. DB 칼럼의 길이 제한 - 위와 마찬가지입니다.
+3. 리프레시 토큰 적용 - 모바일의 경우, refresh token 을 추가해 자동 세션 갱신 기능을 추가하는 편입니다.
