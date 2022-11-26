@@ -2,6 +2,7 @@ package com.example.persist.entity;
 
 
 import com.example.constant.EnvConstants;
+import com.example.util.OneWayEncryptor;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -106,13 +107,13 @@ public class MemberEntity extends TimeEntity {
     }
 
     public String changePassword(String oldPassword, String newPassword) throws Exception {
-        if(!this.password().equals(oldPassword)) throw new Exception("invalid try");
+        if(!isEqualsToPassword(oldPassword)) throw new Exception("invalid try");
         this.password = newPassword;
         return refreshAccessKey();
     }
 
     public String loginByEmail(String email, String password) throws Exception {
-        if(this.email.equals(email) && this.password.equals(password)) {
+        if(this.email.equals(email) && isEqualsToPassword(password)) {
             return refreshAccessKey();
         } else {
             throw new Exception("not valid login");
@@ -120,7 +121,7 @@ public class MemberEntity extends TimeEntity {
     }
 
     public String loginByPhone(String phone, String password) throws Exception {
-        if(this.phone.equals(phone) && this.password.equals(password)) {
+        if(this.phone.equals(phone) && isEqualsToPassword(password)) {
             return refreshAccessKey();
         } else {
             throw new Exception("not valid login");
@@ -137,6 +138,10 @@ public class MemberEntity extends TimeEntity {
         this.lastVerifiedTime = LocalDateTime.now();
         this.expireDateTime = LocalDateTime.now().plusSeconds(EnvConstants.SESSION_LIVE_SECONDS);
         return accessKey;
+    }
+
+    private Boolean isEqualsToPassword(String passwordString) {
+        return this.password.equals(OneWayEncryptor.hashFrom(passwordString));
     }
 
     @Override

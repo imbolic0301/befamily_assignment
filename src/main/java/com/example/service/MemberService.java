@@ -4,6 +4,7 @@ import com.example.api.dto.MemberDto;
 import com.example.persist.entity.MemberEntity;
 import com.example.persist.repo.MemberJpaRepo;
 import com.example.util.JwtTokenProvider;
+import com.example.util.OneWayEncryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -93,7 +94,7 @@ public class MemberService {
                 .email(request.getEmail())
                 .identifierKor(request.getIdentifierKor())
                 .age(request.getAge())
-                .password(request.getPassword())
+                .password(OneWayEncryptor.hashFrom(request.getPassword()))
                 .build();
     }
 
