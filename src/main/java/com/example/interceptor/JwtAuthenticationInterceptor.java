@@ -1,8 +1,10 @@
 package com.example.interceptor;
 
+import com.example.exception.GlobalException;
 import com.example.service.MemberService;
 import com.example.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,7 +25,7 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             String accessKey = jwtTokenProvider.accessKeyFrom(jws);
             return memberService.isValidAccessKey(accessKey);
         }
-        throw new Exception("not valid session");
+        throw new GlobalException("not valid session", HttpStatus.UNAUTHORIZED);
     }
 
 }

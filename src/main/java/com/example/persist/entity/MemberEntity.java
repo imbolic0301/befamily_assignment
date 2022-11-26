@@ -2,10 +2,12 @@ package com.example.persist.entity;
 
 
 import com.example.constant.EnvConstants;
+import com.example.exception.GlobalException;
 import com.example.util.OneWayEncryptor;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -105,7 +107,7 @@ public class MemberEntity extends TimeEntity {
     }
 
     public String changePassword(String oldPassword, String newPassword) throws Exception {
-        if(!isEqualsToPassword(oldPassword)) throw new Exception("invalid try");
+        if(!isEqualsToPassword(oldPassword)) throw new GlobalException("not valid try", HttpStatus.BAD_REQUEST);
         this.password = newPassword;
         return refreshAccessKey();
     }
@@ -113,21 +115,19 @@ public class MemberEntity extends TimeEntity {
     public String loginByEmail(String email, String password) throws Exception {
         if(this.email.equals(email) && isEqualsToPassword(password)) {
             return refreshAccessKey();
-        } else {
-            throw new Exception("not valid login");
         }
+        throw new GlobalException("not valid request", HttpStatus.BAD_REQUEST);
     }
 
     public String loginByPhone(String phone, String password) throws Exception {
         if(this.phone.equals(phone) && isEqualsToPassword(password)) {
             return refreshAccessKey();
-        } else {
-            throw new Exception("not valid login");
         }
+        throw new GlobalException("not valid request", HttpStatus.BAD_REQUEST);
     }
 
     public String createAccessKeyForNew() throws Exception {
-        if(this.id != null) throw new Exception("not valid operation");
+        if(this.id != null) throw new GlobalException("not valid operation", HttpStatus.SERVICE_UNAVAILABLE);
         return refreshAccessKey();
     }
 

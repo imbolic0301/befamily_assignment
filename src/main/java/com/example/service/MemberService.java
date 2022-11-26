@@ -1,12 +1,14 @@
 package com.example.service;
 
 import com.example.api.dto.MemberDto;
+import com.example.exception.GlobalException;
 import com.example.persist.entity.MemberEntity;
 import com.example.persist.repo.MemberJpaRepo;
 import com.example.util.DecryptableEncryptor;
 import com.example.util.JwtTokenProvider;
 import com.example.util.OneWayEncryptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,7 +36,7 @@ public class MemberService {
     public boolean isValidAccessKey(String accessKey) throws Exception {
         MemberEntity exist = memberRepo.findByAccessKey(accessKey);
         if(exist == null || LocalDateTime.now().isAfter(exist.expireDateTime()))
-            throw new Exception("not valid access key");
+            throw new GlobalException("not valid access key", HttpStatus.BAD_REQUEST);
         return true;
     }
 
@@ -43,9 +45,9 @@ public class MemberService {
         MemberEntity newMember = from(request);
         String accessKey;
         if(memberRepo.findByEmail(newMember.email()) != null) {
-            throw new Exception("duplicated email");
+            throw new GlobalException("duplicated email", HttpStatus.SERVICE_UNAVAILABLE);
         } else if(memberRepo.findByPhone(newMember.phone()) != null) {
-            throw new Exception("duplicated phone");
+            throw new GlobalException("duplicated phone", HttpStatus.SERVICE_UNAVAILABLE);
         } else {
             accessKey = newMember.createAccessKeyForNew();
             memberRepo.save(newMember);
@@ -67,7 +69,7 @@ public class MemberService {
     public String loginByEmail(String email, String password) throws Exception {
         String encrypt = DecryptableEncryptor.encrypt(email);
         MemberEntity exist = memberRepo.findByEmail(encrypt);
-        if(exist == null) throw new Exception("not found member");
+        if(exist == null) throw new GlobalException("not found member", HttpStatus.BAD_REQUEST);
         String accessKey = exist.loginByEmail(encrypt, password);
         memberRepo.save(exist);
 
@@ -78,7 +80,7 @@ public class MemberService {
     public String loginByPhone(String phone, String password) throws Exception {
         String encrypt = DecryptableEncryptor.encrypt(phone);
         MemberEntity exist = memberRepo.findByPhone(encrypt);
-        if(exist == null) throw new Exception("not found member");
+        if(exist == null) throw new GlobalException("not found member", HttpStatus.BAD_REQUEST);
         String accessKey = exist.loginByPhone(encrypt, password);
         memberRepo.save(exist);
 
@@ -87,7 +89,7 @@ public class MemberService {
 
     private MemberEntity entityFrom(Long id) throws Exception {
         Optional<MemberEntity> optionalEntity = memberRepo.findById(id);
-        if(!optionalEntity.isPresent()) throw new Exception("not found member");
+        if(!optionalEntity.isPresent()) throw new GlobalException("not found member", HttpStatus.BAD_REQUEST);
         return optionalEntity.get();
     }
 

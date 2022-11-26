@@ -1,12 +1,14 @@
 package com.example.util;
 
 import com.example.constant.EnvConstants;
+import com.example.exception.GlobalException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -66,7 +68,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(jws) // 파싱 및 검증, 실패 시 에러
                     .getBody();
         } catch (ExpiredJwtException e) { // 토큰이 만료되었을 경우
-            throw new Exception("expired token");
+            throw new GlobalException("expired session", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) { // 그외 에러났을 경우
             throw new Exception("not valid jws");
         }
