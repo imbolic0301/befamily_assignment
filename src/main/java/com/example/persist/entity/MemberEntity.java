@@ -12,12 +12,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "dtb_member")
+@Table(
+        name = "dtb_member",
+        indexes = {
+                @Index(name = "access_key_index", columnList = "access_key"),
+                @Index(name = "email_uk", columnList = "email", unique = true),
+                @Index(name = "phone_uk", columnList = "phone", unique = true)
+        }
+)
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString // TODO - 개발 완료시 삭제할 것
