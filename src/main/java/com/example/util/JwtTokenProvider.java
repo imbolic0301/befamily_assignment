@@ -59,8 +59,6 @@ public class JwtTokenProvider {
     }
 
     public Map<String, Object> parseJws(String jws) throws Exception {
-        System.out.println("JWS : ");
-        System.out.println(jws);
         Map<String, Object> claimMap;
         try {
             claimMap = Jwts.parser()

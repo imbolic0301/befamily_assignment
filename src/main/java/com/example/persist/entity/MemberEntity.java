@@ -6,7 +6,6 @@ import com.example.util.OneWayEncryptor;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +28,6 @@ import java.util.UUID;
 )
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString // TODO - 개발 완료시 삭제할 것
 public class MemberEntity extends TimeEntity {
 
     @Id

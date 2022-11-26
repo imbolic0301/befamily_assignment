@@ -19,8 +19,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
         String jws = jwtTokenProvider.resolveToken(request);
-        System.out.println("jws : "+ jws);
-        System.out.println(request.getRequestURI());
         if (jws != null && jwtTokenProvider.validateToken(jws)) {
             String accessKey = jwtTokenProvider.accessKeyFrom(jws);
             return memberService.isValidAccessKey(accessKey);
