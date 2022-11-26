@@ -15,4 +15,15 @@ public class CommonDto {
         private final String isSuccess = DEFAULT_SUCCESS_CODE;
     }
 
+    @Getter
+    public static class JwtResponse {
+        public JwtResponse(String jwt) {
+            this.jwt = jwt;
+        }
+
+        private final String isSuccess = DEFAULT_SUCCESS_CODE;
+        private final String jwt;
+    }
+
+
 }

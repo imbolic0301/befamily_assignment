@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Component
@@ -35,12 +35,10 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userId, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(userId); // JWT payload 에 저장되는 정보단위
-        claims.put(JWT_CLAIM_MAP_NAME, roles); // 정보는 key / value 쌍으로 저장된다.
+    public String createToken(Map<String, Object> privateClaimMap) {
         Date now = new Date();
         return Jwts.builder()
-                .setClaims(claims) // 정보 저장
+                .setClaims(privateClaimMap) // 프라이빗 클레임 추가
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + TOKEN_ALIVE_SECONDS)) // 만료시간 설정(밀리초)
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 알고화 알고리즘과 시크릿 키 설정

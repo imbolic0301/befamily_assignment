@@ -3,12 +3,15 @@ package com.example.service;
 import com.example.api.dto.MemberDto;
 import com.example.persist.entity.MemberEntity;
 import com.example.persist.repo.MemberJpaRepo;
+import com.example.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberJpaRepo memberRepo;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional(readOnly = true)
     public MemberEntity memberFrom(Long id) throws Exception {
@@ -24,33 +28,48 @@ public class MemberService {
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void join(MemberDto.Request.Join request) throws Exception {
+    public String join(MemberDto.Request.Join request) throws Exception {
         MemberEntity newMember = from(request);
-
+        String accessKey;
         if(memberRepo.findByEmail(newMember.email()) != null) {
             throw new Exception("duplicated email");
         } else if(memberRepo.findByPhone(newMember.phone()) != null) {
             throw new Exception("duplicated phone");
         } else {
+            accessKey = newMember.createAccessKeyForNew();
             memberRepo.save(newMember);
         }
+
+        return jwtFromMember(newMember, accessKey);
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void changePassword(MemberDto.Request.TempPasswordChange request) throws Exception {
+    public String changePassword(MemberDto.Request.TempPasswordChange request) throws Exception {
         MemberEntity exist = entityFrom(request.getId());
-        exist.changePassword(request.getOldPassword(), request.getNewPassword());
+        String accessKey = exist.changePassword(request.getOldPassword(), request.getNewPassword());
         memberRepo.save(exist);
+
+        return jwtFromMember(exist, accessKey);
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void loginByEmail(String email, String password) {
+    public String loginByEmail(String email, String password) throws Exception {
+        MemberEntity exist = memberRepo.findByEmail(email);
+        if(exist == null) throw new Exception("not found member");
+        String accessKey = exist.loginByEmail(email, password);
+        memberRepo.save(exist);
 
+        return jwtFromMember(exist, accessKey);
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void loginByPhone(String phone, String password) {
+    public String loginByPhone(String phone, String password) throws Exception {
+        MemberEntity exist = memberRepo.findByPhone(phone);
+        if(exist == null) throw new Exception("not found member");
+        String accessKey = exist.loginByEmail(phone, password);
+        memberRepo.save(exist);
 
+        return jwtFromMember(exist, accessKey);
     }
 
     private MemberEntity entityFrom(Long id) throws Exception {
@@ -68,5 +87,15 @@ public class MemberService {
                 .password(request.getPassword())
                 .build();
     }
+
+    private String jwtFromMember(MemberEntity member, String accessKey) {
+        Map<String, Object> claimMap = new HashMap<>();
+        claimMap.put("id", member.id());
+        claimMap.put("email", member.email());
+        claimMap.put("accessKey", accessKey);
+        return jwtTokenProvider.createToken(claimMap);
+    }
+
+
 
 }

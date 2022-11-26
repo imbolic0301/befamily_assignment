@@ -23,13 +23,20 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity<?> join(@RequestBody MemberDto.Request.Join request) throws Exception {
-        memberService.join(request);
-        return ResponseEntity.ok(CommonDto.successResponse.get());
+        String jwt = memberService.join(request);
+        return ResponseEntity.ok(new CommonDto.JwtResponse(jwt));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberDto.Request.Login request) {
-        return null;
+    @PostMapping("/login/email")
+    public ResponseEntity<?> loginByEmail(@RequestBody MemberDto.Request.Login request) throws Exception {
+        String jwt = memberService.loginByEmail(request.getEmail(), request.getPassword());
+        return ResponseEntity.ok(new CommonDto.JwtResponse(jwt));
+    }
+
+    @PostMapping("/login/phone")
+    public ResponseEntity<?> loginByPhone(@RequestBody MemberDto.Request.Login request) throws Exception {
+        String jwt = memberService.loginByPhone(request.getPhone(), request.getPassword());
+        return ResponseEntity.ok(new CommonDto.JwtResponse(jwt));
     }
 
     @PatchMapping("/password/temp")
