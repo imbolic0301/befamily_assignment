@@ -3,6 +3,7 @@ package com.example.service;
 import com.example.api.dto.MemberDto;
 import com.example.persist.entity.MemberEntity;
 import com.example.persist.repo.MemberJpaRepo;
+import com.example.util.DecryptableEncryptor;
 import com.example.util.JwtTokenProvider;
 import com.example.util.OneWayEncryptor;
 import lombok.RequiredArgsConstructor;
@@ -64,9 +65,10 @@ public class MemberService {
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String loginByEmail(String email, String password) throws Exception {
-        MemberEntity exist = memberRepo.findByEmail(email);
+        String encrypt = DecryptableEncryptor.encrypt(email);
+        MemberEntity exist = memberRepo.findByEmail(encrypt);
         if(exist == null) throw new Exception("not found member");
-        String accessKey = exist.loginByEmail(email, password);
+        String accessKey = exist.loginByEmail(encrypt, password);
         memberRepo.save(exist);
 
         return jwtFromMember(exist, accessKey);
@@ -74,9 +76,10 @@ public class MemberService {
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public String loginByPhone(String phone, String password) throws Exception {
-        MemberEntity exist = memberRepo.findByPhone(phone);
+        String encrypt = DecryptableEncryptor.encrypt(phone);
+        MemberEntity exist = memberRepo.findByPhone(encrypt);
         if(exist == null) throw new Exception("not found member");
-        String accessKey = exist.loginByPhone(phone, password);
+        String accessKey = exist.loginByPhone(encrypt, password);
         memberRepo.save(exist);
 
         return jwtFromMember(exist, accessKey);
@@ -88,19 +91,19 @@ public class MemberService {
         return optionalEntity.get();
     }
 
-    private MemberEntity from(MemberDto.Request.Join request) {
+    private MemberEntity from(MemberDto.Request.Join request) throws Exception {
         return MemberEntity.builder()
-                .phone(request.getPhone())
-                .email(request.getEmail())
-                .identifierKor(request.getIdentifierKor())
-                .age(request.getAge())
+                .phone(DecryptableEncryptor.encrypt(request.getPhone()))
+                .email(DecryptableEncryptor.encrypt(request.getEmail()))
+                .identifierKor(DecryptableEncryptor.encrypt(request.getIdentifierKor()))
+                .age(DecryptableEncryptor.encrypt(request.getAge()))
                 .password(OneWayEncryptor.hashFrom(request.getPassword()))
                 .build();
     }
 
-    private String jwtFromMember(MemberEntity member, String accessKey) {
+    private String jwtFromMember(MemberEntity member, String accessKey) throws Exception {
         Map<String, Object> claimMap = new HashMap<>();
-        claimMap.put("id", member.id());
+        claimMap.put("id", DecryptableEncryptor.encrypt(String.valueOf(member.id())));
         claimMap.put("email", member.email());
         claimMap.put("accessKey", accessKey);
         return jwtTokenProvider.createToken(claimMap);

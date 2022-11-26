@@ -1,6 +1,7 @@
 package com.example.api.dto;
 
 import com.example.persist.entity.MemberEntity;
+import com.example.util.DecryptableEncryptor;
 import lombok.Getter;
 
 public class MemberDto {
@@ -35,10 +36,10 @@ public class MemberDto {
         @Getter
         public static class Info {
 
-            public Info(MemberEntity entity) {
-                this.email = entity.email();
-                this.age = entity.age();
-                this.phone = entity.phone();
+            public Info(MemberEntity entity) throws Exception {
+                this.email = DecryptableEncryptor.decrypt(entity.email());
+                this.age = DecryptableEncryptor.decrypt(entity.age());
+                this.phone = DecryptableEncryptor.decrypt(entity.phone());
             }
 
             private final String email;

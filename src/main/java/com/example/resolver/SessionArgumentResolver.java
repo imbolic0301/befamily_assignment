@@ -1,6 +1,7 @@
 package com.example.resolver;
 
 import com.example.constant.EnvConstants;
+import com.example.util.DecryptableEncryptor;
 import com.example.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -30,8 +31,8 @@ public class SessionArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String jws = webRequest.getHeader(EnvConstants.AUTH_HEADER_NAME);
         Map<String, Object> claimMap = jwtTokenProvider.parseJws(jws);
-        String idString = claimMap.get(MEMBER_ID_PARAMETER).toString();
-        return Long.valueOf(idString);
+        String encryptedId = claimMap.get(MEMBER_ID_PARAMETER).toString();
+        return Long.valueOf(DecryptableEncryptor.decrypt(encryptedId));
     }
 
 }
