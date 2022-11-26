@@ -22,7 +22,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     // Interceptor 적용 제외 대상
     private static final String[] EXCLUDE_PATHS = {
             /* 회원 관련 API */
-            "/api/v1/member" // 가입 API
+            "/api/v1/member", // 가입 API
+            "/api/v1/member/login/**", // 가입 API
     };
 
     @Override

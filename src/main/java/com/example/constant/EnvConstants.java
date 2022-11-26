@@ -6,4 +6,6 @@ public class EnvConstants {
     public final static Long SESSION_LIVE_MILLISECONDS = 300L * 1000;
     // 세션 헤더 토큰 이름
     public static final String AUTH_HEADER_NAME = "Authorization";
+    // 세션 헤더 토큰 이름
+    public static final String SESSION_KEY_NAME = "accessKey";
 }

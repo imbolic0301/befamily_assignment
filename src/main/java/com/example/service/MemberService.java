@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +26,14 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberEntity memberFrom(Long id) throws Exception {
         return entityFrom(id);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isValidAccessKey(String accessKey) throws Exception {
+        MemberEntity exist = memberRepo.findByAccessKey(accessKey);
+        if(exist == null || LocalDateTime.now().isAfter(exist.expireDateTime()))
+            throw new Exception("not valid access key");
+        return true;
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -66,7 +75,7 @@ public class MemberService {
     public String loginByPhone(String phone, String password) throws Exception {
         MemberEntity exist = memberRepo.findByPhone(phone);
         if(exist == null) throw new Exception("not found member");
-        String accessKey = exist.loginByEmail(phone, password);
+        String accessKey = exist.loginByPhone(phone, password);
         memberRepo.save(exist);
 
         return jwtFromMember(exist, accessKey);
@@ -95,7 +104,5 @@ public class MemberService {
         claimMap.put("accessKey", accessKey);
         return jwtTokenProvider.createToken(claimMap);
     }
-
-
 
 }

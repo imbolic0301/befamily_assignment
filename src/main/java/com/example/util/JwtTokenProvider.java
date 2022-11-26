@@ -54,6 +54,10 @@ public class JwtTokenProvider {
         }
     }
 
+    public String accessKeyFrom(String jws) throws Exception {
+        return parseJws(jws).get(EnvConstants.SESSION_KEY_NAME).toString();
+    }
+
     public Map<String, Object> parseJws(String jws) throws Exception {
         System.out.println("JWS : ");
         System.out.println(jws);

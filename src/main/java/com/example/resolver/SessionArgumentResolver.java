@@ -21,6 +21,7 @@ public class SessionArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
+        System.out.println("supportsParameter called");
         return parameter.getParameterName().equalsIgnoreCase(MEMBER_ID_PARAMETER)
                 && parameter.getParameterType().equals(Long.class);
     }
