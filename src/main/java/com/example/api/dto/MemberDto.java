@@ -24,9 +24,7 @@ public class MemberDto {
         }
 
         @Getter
-        public static class TempPasswordChange {
-            private Long id;
-//            private String email;
+        public static class PasswordChange {
             private String oldPassword;
             private String newPassword;
         }

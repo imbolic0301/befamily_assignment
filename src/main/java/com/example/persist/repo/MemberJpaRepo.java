@@ -14,4 +14,7 @@ public interface MemberJpaRepo extends JpaRepository<MemberEntity, Long> {
     @Query("SELECT m FROM MemberEntity m WHERE m.phone = :phone")
     MemberEntity findByPhone(@Param("phone") String phone);
 
+    @Query("SELECT m FROM MemberEntity m WHERE m.accessKey = :accessKey")
+    MemberEntity findByAccessKey(@Param("accessKey") String accessKey);
+
 }
