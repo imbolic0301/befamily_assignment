@@ -44,8 +44,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = false, isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public String changePassword(MemberDto.Request.TempPasswordChange request) throws Exception {
-        MemberEntity exist = entityFrom(request.getId());
+    public String changePassword(Long sessionId, MemberDto.Request.PasswordChange request) throws Exception {
+        MemberEntity exist = entityFrom(sessionId);
         String accessKey = exist.changePassword(request.getOldPassword(), request.getNewPassword());
         memberRepo.save(exist);
 

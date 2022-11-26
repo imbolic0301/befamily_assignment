@@ -38,10 +38,10 @@ public class MemberController {
         return ResponseEntity.ok(new CommonDto.JwtResponse(jwt));
     }
 
-    @PatchMapping("/password/temp")
-    public ResponseEntity<?> login(@RequestBody MemberDto.Request.TempPasswordChange request) throws Exception {
-        memberService.changePassword(request);
-        return ResponseEntity.ok(CommonDto.successResponse.get());
+    @PatchMapping("/password")
+    public ResponseEntity<?> changePassword(Long id, @RequestBody MemberDto.Request.PasswordChange request) throws Exception {
+        String jwt = memberService.changePassword(id, request);
+        return ResponseEntity.ok(new CommonDto.JwtResponse(jwt));
     }
 
     @GetMapping("/info")
